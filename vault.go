@@ -48,7 +48,7 @@ func (k *Vault) login(user string, password string) error {
 
 	req, err := http.NewRequest("GET", url, nil)
 
-	req.Header.Add("X-Vault-Token", "s.XgSNXNFGcXyhs7a5Uu1gg806")
+	req.Header.Add("X-Vault-Token", "s.qztLjR0vjFm8jaB2RDUMGeyq")
 
     resp, err := client.Do(req)
 

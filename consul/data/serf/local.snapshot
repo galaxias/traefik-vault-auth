@@ -1,0 +1,14 @@
+alive: c7fe2aa1d41e 172.21.0.2:8301
+alive: 188440a6ed56 172.21.0.3:8301
+clock: 1
+event-clock: 1
+event-clock: 2
+event-clock: 3
+not-alive: 188440a6ed56
+alive: c7fe2aa1d41e 172.21.0.2:8301
+alive: 188440a6ed56 172.21.0.4:8301
+clock: 2
+event-clock: 4
+alive: c5ceaecb4660 172.22.0.3:8301
+alive: 764fb4d39352 172.22.0.5:8301
+clock: 3
