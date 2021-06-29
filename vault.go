@@ -51,7 +51,7 @@ func (k *Vault) login(user string, password string) error {
 
     resp, err := client.Do(req)
 
-    body, err := ioutil.ReadAll(resp.Body)
+    body, _ := ioutil.ReadAll(resp.Body)
     bodyString := string(body)
 // 	resp, err := http.Get(url, "application/json", bytes.NewBuffer(reqBody))
 
