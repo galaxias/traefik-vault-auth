@@ -51,9 +51,11 @@ func (k *Vault) login(user string, password string) error {
 
     resp, err := client.Do(req)
 
+    body, err := ioutil.ReadAll(resp.Body)
+    bodyString := string(body)
 // 	resp, err := http.Get(url, "application/json", bytes.NewBuffer(reqBody))
 
-    fmt.Println("resp StatusCode "  + string(resp.StatusCode))
+    fmt.Println("resp StatusCode "  + bodyString)
 
 	if err != nil {
 		return fmt.Errorf("Authentication request send to %s failed: %v", url, err)
