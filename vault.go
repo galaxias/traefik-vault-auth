@@ -3,7 +3,6 @@ package traefik_vault_auth
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"io/ioutil"
 	"net/http"
 )
