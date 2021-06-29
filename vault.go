@@ -68,8 +68,6 @@ func (k *Vault) login(user string, password string) error {
 
 	var jsonBody map[string]interface{}
 
-	body, _ := ioutil.ReadAll(resp.Body)
-
 	if err := json.Unmarshal(body, &jsonBody); err != nil {
 		return err
 	}
