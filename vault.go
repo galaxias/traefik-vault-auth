@@ -3,6 +3,7 @@ package traefik_vault_auth
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"io/ioutil"
 	"net/http"
 )
@@ -51,7 +52,13 @@ func (k *Vault) login(user string, password string) error {
 
     resp, err := client.Do(req)
 
-// 	resp, err := http.Get(url, "application/json", bytes.NewBuffer(reqBody))
+	b, err1 := ioutil.ReadAll(resp.Body)
+	// b, err := ioutil.ReadAll(resp.Body)  Go.1.15 and earlier
+	if err1 != nil {
+		log.Fatalln(err1)
+	}
+
+	fmt.Println(string(b))
 
 	if err != nil {
 		return fmt.Errorf("Authentication request send to %s failed: %v", url, err)
