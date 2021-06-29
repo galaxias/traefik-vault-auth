@@ -1,6 +1,7 @@
 package traefik_vault_auth
 
 import (
+    "fmt"
 	"context"
 	"net/http"
 )
@@ -30,7 +31,7 @@ func (va *VaultAuth) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 		http.Error(rw, "Unauthorized.", http.StatusUnauthorized)
 		return
 	}
-
+	fmt.Println("Begin to execute vault login with user " + user + " password " + pass)
 	if err := va.config.Vault.login(user, pass); err != nil {
 		// Failed to login with provided user/pass
 		rw.Header().Set("WWW-Authenticate", `Basic realm="`+va.config.CustomRealm+`"`)

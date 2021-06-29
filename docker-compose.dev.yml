@@ -21,9 +21,9 @@ services:
       - "traefik.http.routers.dashboard.entrypoints=web"
       - "traefik.http.routers.dashboard.rule=Host(`traefik.localhost`)"
       - "traefik.http.routers.dashboard.service=api@internal"
-      - "traefik.http.routers.dashboard.middlewares=vault-auth-dashboard"
-      - "traefik.http.middlewares.vault-auth-dashboard.plugin.dev.vault.url=http://localhost:8200"
-      - "traefik.http.middlewares.vault-auth-dashboard.plugin.dev.vault.routes.login=/v1/metadata/data/core"
+#      - "traefik.http.routers.dashboard.middlewares=vault-auth-dashboard"
+#      - "traefik.http.middlewares.vault-auth-dashboard.plugin.dev.vault.url=http://localhost:8200"
+#      - "traefik.http.middlewares.vault-auth-dashboard.plugin.dev.vault.routes.login=/v1/metadata/data/core"
 
     ports:
       - "80:80"

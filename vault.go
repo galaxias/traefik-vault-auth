@@ -69,9 +69,12 @@ func (k *Vault) login(user string, password string) error {
 
 	res_pass := jsonBody["data"].(map[string]interface{})["data"].(map[string]interface{})[user].(string)
 
+    fmt.Println("res_pass  "  + res_pass)
 	if(res_pass != password){
 		return fmt.Errorf("User %s do not have the right password: %v", user, password)
 	}
+
+// 	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", k.JWT))
 
 	return nil
 }
