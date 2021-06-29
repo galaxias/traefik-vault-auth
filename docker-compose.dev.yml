@@ -1,0 +1,69 @@
+version: "3.3"
+
+services:
+#------------------------------------------------------------------------------
+# Traefik proxy configured with plugin dev mode and Dashboard
+# NOTE: Only 'admin' user can access Traefik Dashboard
+#------------------------------------------------------------------------------
+  traefik:
+    image: "traefik:v2.3"
+    container_name: "traefik-vault"
+    depends_on:
+      - vault
+    command:
+      - "--api.dashboard=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--pilot.token=${TRAEFIK_PILOT_TOKEN}"
+      - "--experimental.devPlugin.goPath=/plugins/go"
+      - "--experimental.devPlugin.moduleName=github.wdf.sap.corp/I523918/traefik-vault-auth"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dashboard.entrypoints=web"
+      - "traefik.http.routers.dashboard.rule=Host(`traefik.localhost`)"
+      - "traefik.http.routers.dashboard.service=api@internal"
+      - "traefik.http.routers.dashboard.middlewares=vault-auth-dashboard"
+      - "traefik.http.middlewares.vault-auth-dashboard.plugin.dev.vault.url=http://localhost:8200"
+      - "traefik.http.middlewares.vault-auth-dashboard.plugin.dev.vault.routes.login=/v1/metadata/data/core"
+
+    ports:
+      - "80:80"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./:/plugins/go/src/github.wdf.sap.corp/I523918/traefik-vault-auth"
+  vault:
+    build:
+      context: ./vault
+      dockerfile: Dockerfile
+    ports:
+      - 8200:8200
+    volumes:
+      - ./vault/config:/vault/config
+      - ./vault/policies:/vault/policies
+      - ./vault/data:/vault/data
+      - ./vault/logs:/vault/logs
+    environment:
+      - VAULT_ADDR=http://127.0.0.1:8200
+      - VAULT_API_ADDR=http://127.0.0.1:8200
+    command: server -config=/vault/config/vault-config.json
+    cap_add:
+      - IPC_LOCK
+
+#------------------------------------------------------------------------------
+# Secured application using plugin
+# NOTE: Users 'admin' and 'developer' can access this app
+#------------------------------------------------------------------------------
+
+  whoami:
+    image: "traefik/whoami"
+    container_name: "simple-service-vault"
+    depends_on:
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule=Host(`whoami.localhost`)"
+      - "traefik.http.routers.whoami.entrypoints=web"
+      - "traefik.http.routers.whoami.middlewares=vault-auth-whoami"
+      - "traefik.http.middlewares.vault-auth-whoami.plugin.dev.vault.url=http://localhost:8200"
+      - "traefik.http.middlewares.vault-auth-whoami.plugin.dev.vault.routes.login=/v1/metadata/data/core"
