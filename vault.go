@@ -57,7 +57,6 @@ func (k *Vault) login(user string, password string) error {
 		return fmt.Errorf("Authentication request send to %s failed: %v", url, err)
 	}
 
-	fmt.Println("HTTP Response Status:", string(resp.StatusCode))
 	if resp.StatusCode != 200 {
 		return fmt.Errorf("Authentication request send to %s failed: status code %d", url, resp.StatusCode)
 	}
