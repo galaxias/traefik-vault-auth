@@ -46,5 +46,5 @@ services:
       - "traefik.http.routers.whoami.rule=Host(`whoami.localhost`)"
       - "traefik.http.routers.whoami.entrypoints=web"
       - "traefik.http.routers.whoami.middlewares=vault-auth-whoami"
-      - "traefik.http.middlewares.vault-auth-whoami.plugin.dev.vault.url=http://localhost:8200"
-      - "traefik.http.middlewares.vault-auth-whoami.plugin.dev.vault.routes.login=/v1/metadata/data/core"
+      - "traefik.http.middlewares.vault-auth-whoami.plugin.dev.vault.url=https://vault.kube-cd.c.eu-de-2.cloud.sap"
+      - "traefik.http.middlewares.vault-auth-whoami.plugin.dev.vault.routes.login=/v1/test/data/testuser"
