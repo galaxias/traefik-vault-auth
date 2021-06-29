@@ -52,18 +52,11 @@ func (k *Vault) login(user string, password string) error {
 
     resp, err := client.Do(req)
 
-	b, err1 := ioutil.ReadAll(resp.Body)
-	// b, err := ioutil.ReadAll(resp.Body)  Go.1.15 and earlier
-	if err1 != nil {
-		log.Fatalln(err1)
-	}
-
-	fmt.Println(string(b))
-
 	if err != nil {
 		return fmt.Errorf("Authentication request send to %s failed: %v", url, err)
 	}
 
+    fmt.Println("resp.StatusCode  "  + string(resp.StatusCode))
 
 	if resp.StatusCode != 200 {
 		return fmt.Errorf("Authentication request send to %s failed: status code %d", url, resp.StatusCode)
