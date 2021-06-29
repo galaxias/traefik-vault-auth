@@ -1,7 +1,6 @@
 package traefik_vault_auth
 
 import (
-	"log"
 	"encoding/json"
 	"fmt"
 	"log"
