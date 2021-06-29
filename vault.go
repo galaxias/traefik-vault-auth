@@ -52,8 +52,6 @@ func (k *Vault) login(user string, password string) error {
 
     resp, err := client.Do(req)
 
-    fmt.Println("resp.StatusCode  "  + string(resp.StatusCode))
-
 	if err != nil {
 		return fmt.Errorf("Authentication request send to %s failed: %v", url, err)
 	}
