@@ -1,0 +1,11 @@
+displayName: Basic Auth powered by Vault
+type: middleware
+import: github.com/galaxias/traefik-vault-auth
+summary: Traefik Basic Auth middleware powered by Vault
+iconPath: assets/vaulticon.svg
+testData:
+  customRealm: "Use a valid Vault user to authenticate"
+  vault:
+    url: "http://127.0.0.1:8200"
+    routes:
+      login: /v1/metadata/data/core

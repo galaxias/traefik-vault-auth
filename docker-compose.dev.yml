@@ -17,7 +17,7 @@ services:
       - "--entrypoints.web.address=:80"
       - "--pilot.token=${TRAEFIK_PILOT_TOKEN}"
       - "--experimental.devPlugin.goPath=/plugins/go"
-      - "--experimental.devPlugin.moduleName=github.wdf.sap.corp/I523918/traefik-vault-auth"
+      - "--experimental.devPlugin.moduleName=github.com/galaxias/traefik-vault-auth"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.dashboard.entrypoints=web"
@@ -31,7 +31,7 @@ services:
       - "80:80"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "./:/plugins/go/src/github.wdf.sap.corp/I523918/traefik-vault-auth"
+      - "./:/plugins/go/src/github.com/galaxias/traefik-vault-auth"
   vault:
     build:
       context: ./vault
