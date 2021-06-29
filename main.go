@@ -2,7 +2,6 @@ package traefik_vault_auth
 
 import (
 	"context"
-	"log"
 	"net/http"
 )
 

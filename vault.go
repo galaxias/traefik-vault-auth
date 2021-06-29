@@ -1,7 +1,6 @@
 package traefik_vault_auth
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -40,7 +39,6 @@ func (k *Vault) login(user string, password string) error {
 // 		"password": password,
 // 	})
 	client := &http.Client{
-	     CheckRedirect: redirectPolicyFunc,
 	}
 
 	url := fmt.Sprintf("%s%s", k.URL, k.Routes.Login)
