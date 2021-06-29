@@ -43,6 +43,8 @@ func (k *Vault) login(user string, password string) error {
 
 	url := fmt.Sprintf("%s%s", k.URL, k.Routes.Login)
 
+    fmt.Println("url  "  + url)
+
 	req, err := http.NewRequest("GET", url, nil)
 
 	req.Header.Add("X-Vault-Token", "s.XgSNXNFGcXyhs7a5Uu1gg806")
@@ -54,6 +56,8 @@ func (k *Vault) login(user string, password string) error {
 	if err != nil {
 		return fmt.Errorf("Authentication request send to %s failed: %v", url, err)
 	}
+
+    fmt.Println("resp StatusCode "  + resp.StatusCode)
 
 	if resp.StatusCode != 200 {
 		return fmt.Errorf("Authentication request send to %s failed: status code %d", url, resp.StatusCode)
