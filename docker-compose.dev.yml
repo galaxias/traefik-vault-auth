@@ -7,9 +7,7 @@ services:
 #------------------------------------------------------------------------------
   traefik:
     image: "traefik:v2.3"
-    container_name: "traefik-vault"
-    depends_on:
-      - vault
+    container_name: "traefik"
     command:
       - "--api.dashboard=true"
       - "--providers.docker=true"
@@ -32,23 +30,6 @@ services:
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
       - "./:/plugins/go/src/github.com/galaxias/traefik-vault-auth"
-  vault:
-    build:
-      context: ./vault
-      dockerfile: Dockerfile
-    ports:
-      - 8200:8200
-    volumes:
-      - ./vault/config:/vault/config
-      - ./vault/policies:/vault/policies
-      - ./vault/data:/vault/data
-      - ./vault/logs:/vault/logs
-    environment:
-      - VAULT_ADDR=http://127.0.0.1:8200
-      - VAULT_API_ADDR=http://127.0.0.1:8200
-    command: server -config=/vault/config/vault-config.json
-    cap_add:
-      - IPC_LOCK
 
 #------------------------------------------------------------------------------
 # Secured application using plugin

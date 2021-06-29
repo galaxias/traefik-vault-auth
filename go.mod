@@ -1,4 +1,4 @@
-module github.wdf.sap.corp/I523918/traefik-vault-auth
+module github.com/galaxias/traefik-vault-auth
 
 go 1.15
 
