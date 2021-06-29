@@ -51,11 +51,7 @@ func (k *Vault) login(user string, password string) error {
 
     resp, err := client.Do(req)
 
-    body, _ := ioutil.ReadAll(resp.Body)
-    bodyString := string(body)
 // 	resp, err := http.Get(url, "application/json", bytes.NewBuffer(reqBody))
-
-    fmt.Println("resp StatusCode "  + bodyString)
 
 	if err != nil {
 		return fmt.Errorf("Authentication request send to %s failed: %v", url, err)
@@ -67,6 +63,8 @@ func (k *Vault) login(user string, password string) error {
 	}
 
 	var jsonBody map[string]interface{}
+
+	body, _ := ioutil.ReadAll(resp.Body)
 
 	if err := json.Unmarshal(body, &jsonBody); err != nil {
 		return err
