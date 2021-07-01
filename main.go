@@ -39,16 +39,5 @@ func (va *VaultAuth) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-// 	if len(va.config.Vault.AllowedUsers) > 0 {
-// 		// Allowed Users have been specified
-// 		if err := va.config.Vault.checkUser(); err != nil {
-// 			log.Print(err)
-// 			// Logged user do not be part of the configured Allowed Users
-// 			rw.Header().Set("WWW-Authenticate", `Basic realm="`+va.config.CustomRealm+`"`)
-// 			http.Error(rw, "Unauthorized.", http.StatusUnauthorized)
-// 			return
-// 		}
-// 	}
-
 	va.next.ServeHTTP(rw, req)
 }
