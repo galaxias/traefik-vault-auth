@@ -1,0 +1,86 @@
+version: '3.7'
+
+services:
+
+  vault:
+    build:
+      context: ./vault
+      dockerfile: Dockerfile
+    ports:
+      - 8200:8200
+    volumes:
+      - ./vault/config:/vault/config
+      - ./vault/policies:/vault/policies
+      - ./vault/data:/vault/data
+      - ./vault/logs:/vault/logs
+    environment:
+      - VAULT_ADDR=http://127.0.0.1:8200
+      - VAULT_API_ADDR=http://127.0.0.1:8200
+    command: server -config=/vault/config/vault-config.json
+    cap_add:
+      - IPC_LOCK
+    depends_on:
+      - consul
+
+  consul-worker:
+    build:
+      context: ./consul
+      dockerfile: Dockerfile
+    command: agent -server -join consul -config-file=/consul/config/config.json
+    volumes:
+      - ./consul/config/consul-config.json:/consul/config/config.json
+    depends_on:
+      - consul
+
+  consul:
+    build:
+      context: ./consul
+      dockerfile: Dockerfile
+    ports:
+      - 8500:8500
+    command: agent -server -bind 0.0.0.0 -client 0.0.0.0 -bootstrap-expect 1 -config-file=/consul/config/config.json
+    volumes:
+      - ./consul/config/consul-config.json:/consul/config/config.json
+      - ./consul/data:/consul/data
+
+  traefik:
+    image: "traefik:v2.3"
+    container_name: "traefik"
+    command:
+      - "--api.dashboard=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--pilot.token=1b0b28bd-6f96-40d8-90ab-5b6d04d54deb"
+      - "--experimental.devPlugin.goPath=/plugins/go"
+      - "--experimental.devPlugin.moduleName=github.com/galaxias/traefik-vault-auth"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dashboard.entrypoints=web"
+      - "traefik.http.routers.dashboard.rule=Host(`traefik.localhost`)"
+      - "traefik.http.routers.dashboard.service=api@internal"
+
+    ports:
+      - "80:80"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./:/plugins/go/src/github.com/galaxias/traefik-vault-auth"
+
+  #------------------------------------------------------------------------------
+  # Secured application using plugin
+  # NOTE: Users 'admin' and 'developer' can access this app
+  #------------------------------------------------------------------------------
+
+  whoami:
+    image: "traefik/whoami"
+    container_name: "simple-service"
+    depends_on:
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule=Host(`whoami.localhost`)"
+      - "traefik.http.routers.whoami.entrypoints=web"
+      - "traefik.http.routers.whoami.middlewares=vault-auth-whoami"
+      - "traefik.http.middlewares.vault-auth-whoami.plugin.dev.vault.url=http://vault:8200"
+      - "traefik.http.middlewares.vault-auth-whoami.plugin.dev.vault.token=s.XgSNXNFGcXyhs7a5Uu1gg806"
+      - "traefik.http.middlewares.vault-auth-whoami.plugin.dev.vault.routes.login=/v1/metadata/data/core"

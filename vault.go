@@ -31,16 +31,13 @@ type Vault struct {
 	//  - HTTP: http://localhost:7512
 	//	- HTTPS: https://localhost:7512
 	URL    string `yaml:"url"`
+	Token  string `yaml:"token"`
 	Routes Routes `yaml:"routes,omitempty"`
 }
 
 func (k *Vault) login(user string, password string) error {
-// 	reqBody, _ := json.Marshal(map[string]string{
-// 		"username": user,
-// 		"password": password,
-// 	})
-	client := &http.Client{
-	}
+
+	client := &http.Client{}
 
 	url := fmt.Sprintf("%s%s", k.URL, k.Routes.Login)
 
@@ -48,14 +45,15 @@ func (k *Vault) login(user string, password string) error {
 
 	req, _ := http.NewRequest("GET", url, nil)
 
-	req.Header.Add("X-Vault-Token", "s.qztLjR0vjFm8jaB2RDUMGeyq")
+	req.Header.Add("X-Vault-Token", k.Token)
 
     resp, err := client.Do(req)
+
+    fmt.Println("HTTP Response Status:", resp.StatusCode, http.StatusText(resp.StatusCode))
 
 	if err != nil {
 		return fmt.Errorf("Authentication request send to %s failed: %v", url, err)
 	}
-
 
 	if resp.StatusCode != 200 {
 		return fmt.Errorf("Authentication request send to %s failed: status code %d", url, resp.StatusCode)

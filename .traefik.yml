@@ -7,5 +7,6 @@ testData:
   customRealm: "Use a valid Vault user to authenticate"
   vault:
     url: "http://127.0.0.1:8200"
+    token: "s.XgSNXNFGcXyhs7a5Uu1gg806"
     routes:
       login: /v1/metadata/data/core

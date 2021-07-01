@@ -6,3 +6,8 @@ alive: 188440a6ed56.localhost 172.21.0.4:8302
 alive: c5ceaecb4660.localhost 172.22.0.3:8302
 alive: 764fb4d39352.localhost 172.22.0.5:8302
 clock: 2
+alive: eb987e9e644c.localhost 172.20.0.2:8302
+alive: d16d0dfcc26b.localhost 172.20.0.5:8302
+clock: 7
+alive: d141c9690ba2.localhost 172.21.0.2:8302
+alive: f99ce4b87703.localhost 172.21.0.4:8302
