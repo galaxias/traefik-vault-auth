@@ -51,7 +51,7 @@ services:
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.web.address=:80"
-      - "--pilot.token=1b0b28bd-6f96-40d8-90ab-5b6d04d54deb"
+      - "--pilot.token=${TRAEFIK_PILOT_TOKEN}"
       - "--experimental.devPlugin.goPath=/plugins/go"
       - "--experimental.devPlugin.moduleName=github.com/galaxias/traefik-vault-auth"
     labels:
